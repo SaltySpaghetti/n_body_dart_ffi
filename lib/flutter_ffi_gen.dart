@@ -47,4 +47,13 @@ class FFINativeBinding {
               ffi.Int, ffi.Float, ffi.Float, ffi.Float, ffi.Float)>>('init');
   late final _init =
       _initPtr.asFunction<void Function(int, double, double, double, double)>();
+
+  void update_particles() {
+    return _update_particles();
+  }
+
+  late final _update_particlesPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('update_particles');
+  late final _update_particles =
+      _update_particlesPtr.asFunction<void Function()>();
 }

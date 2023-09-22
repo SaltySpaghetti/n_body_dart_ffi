@@ -158,11 +158,9 @@ class NBodySimulationManagerDartNative
         double randRadius = Random().nextDoubleInRange(0, circleRadius);
         double angle = Random().nextDoubleInRange(-pi, pi);
 
-        /// position
         double positionX = radiusX + cos(angle) * randRadius;
         double positionY = radiusY + sin(angle) * randRadius;
 
-        /// spin
         double velocityX = cos(angle - pi / 2) * (randRadius) * 10;
         double velocityY = sin(angle - pi / 2) * (randRadius) * 10;
 

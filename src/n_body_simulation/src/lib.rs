@@ -1,8 +1,7 @@
-use core::ffi::{c_double, c_int};
 use rand::Rng;
 use std::f32::consts::PI;
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct Particle {
     mass: f32,
     pos: (f32, f32),
@@ -10,7 +9,7 @@ pub struct Particle {
     force: f32,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct SimulationConfig {
     pub particles_amount: u32,
     pub canvas_size: (f32, f32),
@@ -18,22 +17,38 @@ pub struct SimulationConfig {
     pub max_mass: f32,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct NBodyManager {
     config: SimulationConfig,
     pub particles: Vec<Particle>,
 }
 
 impl NBodyManager {
-    pub fn new(config: SimulationConfig) -> Self {
+    pub const fn new() -> Self {
+        NBodyManager {
+            config: SimulationConfig {
+                particles_amount: 0,
+                canvas_size: (0.0, 0.0),
+                min_mass: 0.0,
+                max_mass: 0.0,
+            },
+            particles: vec![],
+        }
+    }
+
+    pub const fn new_with_config(config: SimulationConfig) -> Self {
         NBodyManager {
             config,
             particles: vec![],
         }
     }
 
-    pub fn init(&mut self) {
-        dbg!(&self);
+    pub fn update_config(mut self, config: SimulationConfig) -> Self {
+        self.config = config;
+        self
+    }
+
+    pub fn init(mut self) -> Self {
         for _ in 0..self.config.particles_amount {
             let radius_x = self.config.canvas_size.0 / 2.0;
             let radius_y = self.config.canvas_size.1 / 2.0;
@@ -56,8 +71,12 @@ impl NBodyManager {
 
             self.particles.push(particle);
         }
+
+        self
     }
 }
+
+pub static mut MANAGER: NBodyManager = NBodyManager::new();
 
 #[no_mangle]
 pub extern "C" fn init(
@@ -67,14 +86,19 @@ pub extern "C" fn init(
     min_mass: f32,
     max_mass: f32,
 ) {
-    let mut manager = NBodyManager::new(SimulationConfig {
+    let config = SimulationConfig {
         particles_amount,
         canvas_size: (canvas_width, canvas_height),
         min_mass,
         max_mass,
-    });
+    };
 
-    manager.init();
+    unsafe { MANAGER = MANAGER.clone().update_config(config).init() };
+}
 
-    dbg!(manager);
+#[no_mangle]
+pub extern "C" fn update_particles() {
+    unsafe {
+        dbg!(&MANAGER);
+    }
 }
