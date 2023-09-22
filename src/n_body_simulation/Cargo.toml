@@ -1,0 +1,11 @@
+[package]
+name = "n_body_simulation"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+libc = "*"
+rand = "0.8.5"
+
+[lib]
+crate-type = ["cdylib", "lib"]

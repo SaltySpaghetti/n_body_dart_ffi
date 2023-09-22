@@ -1,0 +1,15 @@
+name: FFINativeBinding
+description: "FFI bindings"
+output: "lib/flutter_ffi_gen.dart"
+headers:
+  entry-points:
+    - "src/n_body_simulation/ffi_gen.h"
+  include-directives:
+    - "**ffi_gen.h"
+preamble: |
+  // ignore_for_file: always_specify_types
+  // ignore_for_file: camel_case_types
+  // ignore_for_file: non_constant_identifier_names
+comments:
+  style: any
+  length: full
