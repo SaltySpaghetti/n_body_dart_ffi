@@ -4,8 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-libc = "*"
+libc = { version = "*", optional = true }
 rand = "0.8.5"
 
 [lib]
 crate-type = ["cdylib", "lib"]
+
+[features]
+capi = ["libc"]

@@ -24,13 +24,13 @@ class FFINativeBinding {
           lookup)
       : _lookup = lookup;
 
-  /// flutter pub run ffigen --config ffigen.yaml
-  void init(
+  ffi.Pointer<NBody> init(
     int particles_amount,
     double canvas_width,
     double canvas_height,
     double min_mass,
     double max_mass,
+    ffi.Pointer<NBody> previous_ptr,
   ) {
     return _init(
       particles_amount,
@@ -38,22 +38,52 @@ class FFINativeBinding {
       canvas_height,
       min_mass,
       max_mass,
+      previous_ptr,
     );
   }
 
   late final _initPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Int, ffi.Float, ffi.Float, ffi.Float, ffi.Float)>>('init');
-  late final _init =
-      _initPtr.asFunction<void Function(int, double, double, double, double)>();
+          ffi.Pointer<NBody> Function(ffi.Int, ffi.Float, ffi.Float, ffi.Float,
+              ffi.Float, ffi.Pointer<NBody>)>>('init');
+  late final _init = _initPtr.asFunction<
+      ffi.Pointer<NBody> Function(
+          int, double, double, double, double, ffi.Pointer<NBody>)>();
 
-  void update_particles() {
-    return _update_particles();
+  ffi.Pointer<ffi.Pointer<Particle>> update_particles(
+    ffi.Pointer<NBody> n_body_ptr,
+  ) {
+    return _update_particles(
+      n_body_ptr,
+    );
   }
 
-  late final _update_particlesPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('update_particles');
-  late final _update_particles =
-      _update_particlesPtr.asFunction<void Function()>();
+  late final _update_particlesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Pointer<Particle>> Function(
+              ffi.Pointer<NBody>)>>('update_particles');
+  late final _update_particles = _update_particlesPtr.asFunction<
+      ffi.Pointer<ffi.Pointer<Particle>> Function(ffi.Pointer<NBody>)>();
+}
+
+final class NBody extends ffi.Opaque {}
+
+final class Particle extends ffi.Struct {
+  @ffi.Float()
+  external double mass;
+
+  @ffi.Float()
+  external double pos_x;
+
+  @ffi.Float()
+  external double pos_y;
+
+  @ffi.Float()
+  external double vel_x;
+
+  @ffi.Float()
+  external double vel_y;
+
+  @ffi.Float()
+  external double force;
 }

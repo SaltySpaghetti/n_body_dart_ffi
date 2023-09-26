@@ -8,8 +8,10 @@ class NBodyPainterDart extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.yellow;
+    final paint = Paint();
     for (final particle in particles) {
+      paint.color = particle.color;
+
       canvas.drawCircle(
         Offset(particle.pos.x, particle.pos.y),
         particle.mass / 1500,

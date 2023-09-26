@@ -119,7 +119,7 @@ class _NBodyDrawerState extends State<NBodyDrawer>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.method.toString(),
+                    widget.method.methodName(),
                     style: const TextStyle(fontSize: 25),
                   ),
                   Text(

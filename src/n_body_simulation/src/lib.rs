@@ -1,14 +1,19 @@
-use rand::Rng;
 use std::f32::consts::PI;
+
+use rand::Rng;
 
 const DELTA_T: f32 = 0.0001;
 
+mod capi;
+
 #[derive(Debug)]
 pub struct Particle {
-    mass: f32,
-    position: (f32, f32),
-    velocity: (f32, f32),
-    force: f32,
+    pub mass: f32,
+    pub pos_x: f32,
+    pub pos_y: f32,
+    pub vel_x: f32,
+    pub vel_y: f32,
+    pub force: f32,
 }
 
 #[derive(Debug)]
@@ -20,14 +25,14 @@ pub struct SimulationConfig {
 }
 
 #[derive(Debug)]
-pub struct NBodyManager {
+pub struct NBody {
     config: SimulationConfig,
     particles: Vec<Particle>,
 }
 
-impl NBodyManager {
+impl NBody {
     pub const fn new() -> Self {
-        NBodyManager {
+        NBody {
             config: SimulationConfig {
                 particles_amount: 0,
                 canvas_size: (0.0, 0.0),
@@ -39,7 +44,7 @@ impl NBodyManager {
     }
 
     pub const fn new_with_config(config: SimulationConfig) -> Self {
-        NBodyManager {
+        NBody {
             config,
             particles: vec![],
         }
@@ -52,28 +57,21 @@ impl NBodyManager {
 
     pub fn init(&mut self) -> &mut Self {
         for _ in 0..self.config.particles_amount {
-            let radius = (
-                self.config.canvas_size.0 / 2.0,
-                self.config.canvas_size.1 / 2.0,
-            );
+            let radius = (self.config.canvas_size.0 / 2.0, self.config.canvas_size.1 / 2.0);
             let circle_radius = radius.0.min(radius.1);
             let rand_radius = rand::thread_rng().gen_range(0.0..circle_radius);
             let angle = rand::thread_rng().gen_range(-PI..PI);
 
-            let position = (
-                radius.0 + angle.cos() * rand_radius,
-                radius.1 + angle.sin() * rand_radius,
-            );
-            let velocity = (
-                (angle - PI / 2.0).cos() * (rand_radius) * 10.0,
-                (angle - PI / 2.0).sin() * (rand_radius) * 10.0,
-            );
+            let position = (radius.0 + angle.cos() * rand_radius, radius.1 + angle.sin() * rand_radius);
+            let velocity = ((angle - PI / 2.0).cos() * (rand_radius) * 10.0, (angle - PI / 2.0).sin() * (rand_radius) * 10.0);
             let mass = rand::thread_rng().gen_range(self.config.min_mass..self.config.max_mass);
 
             let particle = Particle {
                 mass,
-                position,
-                velocity,
+                pos_x: position.0,
+                pos_y: position.1,
+                vel_x: velocity.0,
+                vel_y: velocity.1,
                 force: 0.0,
             };
 
@@ -85,15 +83,17 @@ impl NBodyManager {
 
     pub fn update_particles(&mut self) -> &mut Self {
         let particles_amount = self.particles.len();
-        let mut acceleration: (Vec<f32>, Vec<f32>) =
-            (vec![0.0; particles_amount], vec![0.0; particles_amount]);
+        let mut acceleration: (Vec<f32>, Vec<f32>) = (
+            vec![0.0; particles_amount],
+            vec![0.0; particles_amount],
+        );
 
         for i in 0..particles_amount {
             self.particles[i].force = 0.0;
             for j in i..particles_amount {
                 let tmp_dist = (
-                    self.particles[i].position.0 - self.particles[j].position.0,
-                    self.particles[i].position.0 - self.particles[j].position.1,
+                    self.particles[i].pos_x - self.particles[j].pos_x,
+                    self.particles[i].pos_y - self.particles[j].pos_y,
                 );
                 let dist = (tmp_dist.0 * tmp_dist.0 + tmp_dist.1 * tmp_dist.1).sqrt();
 
@@ -114,38 +114,13 @@ impl NBodyManager {
         }
 
         for i in 0..particles_amount {
-            self.particles[i].velocity.0 += acceleration.0[i] * DELTA_T;
-            self.particles[i].velocity.1 += acceleration.1[i] * DELTA_T;
+            self.particles[i].vel_x += acceleration.0[i] * DELTA_T;
+            self.particles[i].vel_y += acceleration.1[i] * DELTA_T;
 
-            self.particles[i].position.0 += self.particles[i].velocity.0 * DELTA_T;
-            self.particles[i].position.1 += self.particles[i].velocity.1 * DELTA_T;
+            self.particles[i].pos_x += self.particles[i].vel_x * DELTA_T;
+            self.particles[i].pos_y += self.particles[i].vel_y * DELTA_T;
         }
 
         self
     }
 }
-
-// #[no_mangle]
-// pub extern "C" fn init(
-//     particles_amount: u32,
-//     canvas_width: f32,
-//     canvas_height: f32,
-//     min_mass: f32,
-//     max_mass: f32,
-// ) {
-//     let config = SimulationConfig {
-//         particles_amount,
-//         canvas_size: (canvas_width, canvas_height),
-//         min_mass,
-//         max_mass,
-//     };
-//
-//
-// }
-//
-// #[no_mangle]
-// pub extern "C" fn update_particles() {
-//     unsafe {
-//         dbg!(&MANAGER);
-//     }
-// }

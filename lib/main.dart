@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:n_body_dart_ffi/constants.dart';
 import 'package:n_body_dart_ffi/ffi_binder.dart';
@@ -36,7 +39,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var particlesAmount = 2000;
+  var particlesAmount = 3000;
   var method = Method.dart;
 
   @override
@@ -52,15 +55,18 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
-        FFIBinder().nativeBinding.init(
-              particlesAmount,
-              screenSize.width,
-              screenSize.height,
-              Constants.minMass,
-              Constants.maxMass,
-            );
+        var aaa = FFIBinder().nativeBinding.init(
+            particlesAmount,
+            screenSize.width,
+            screenSize.height,
+            Constants.minMass,
+            Constants.maxMass,
+            
+          );
 
-        FFIBinder().nativeBinding.update_particles();
+        inspect(aaa);
+
+        // FFIBinder().nativeBinding.update_particles();
         setState(() {
           method = method == Method.dart ? Method.dartNative : Method.dart;
         });
