@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:n_body_dart_ffi/flutter_ffi_gen.dart';
 
@@ -17,8 +18,12 @@ class FFIBinder {
   }
 
   void initialize() {
-    nativeLib = DynamicLibrary.open(
-      'src/n_body_simulation/target/debug/n_body_simulation.dll',
-    );
+    nativeLib = Platform.isLinux
+        ? DynamicLibrary.open('src/n_body_simulation/target/debug/libn_body_simulation.so')
+        : (Platform.isAndroid
+            ? DynamicLibrary.open('src/n_body_simulation/target/debug/libn_body_simulation.so')
+            : (Platform.isWindows
+                ? DynamicLibrary.open('src/n_body_simulation/target/debug/n_body_simulation.dll')
+                : DynamicLibrary.process()));
   }
 }
