@@ -48,3 +48,4 @@ linux/
 macos/
 
 src/n_body_simulation/target
+.vscode/settings.json

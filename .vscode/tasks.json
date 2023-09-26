@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "compile linux debug",
+            "command": "cd ${workspaceFolder}/example; flutter build linux -t lib/main.dart --debug",
+            // "args": ["build", "linux"],
+            "type": "shell"
+        },
+        {
+            "label": "compile windows debug",
+            "command": "cd ${workspaceFolder}/example; flutter build windows -t lib/main.dart --debug",
+            // "args": ["build", "linux"],
+            "type": "shell"
+        }
+    ]
+}
