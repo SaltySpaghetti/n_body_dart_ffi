@@ -18,7 +18,7 @@ pub struct Particle {
 
 #[derive(Debug)]
 pub struct SimulationConfig {
-    pub particles_amount: u32,
+    pub particles_amount: i32,
     pub canvas_size: (f32, f32),
     pub min_mass: f32,
     pub max_mass: f32,

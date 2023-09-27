@@ -6,16 +6,19 @@ mod capi {
 
     #[no_mangle]
     pub extern "C" fn init(
-        particles_amount: u32,
+        particles_amount: i32,
         canvas_width: f32,
         canvas_height: f32,
         min_mass: f32,
         max_mass: f32,
-        previous_ptr: Box<NBody>,
+        previous_ptr: Option<Box<NBody>>,
     ) -> Box<NBody> {
 
         //Dropping previous pointer if init() is re-called
-        drop(previous_ptr);
+        if !previous_ptr.is_none()
+        {
+            drop(previous_ptr);
+        }
 
         let config = SimulationConfig {
             particles_amount,
@@ -33,5 +36,10 @@ mod capi {
     #[no_mangle]
     pub extern "C" fn update_particles(n_body_ptr: &mut NBody) -> *const Vec<Particle> {
         &n_body_ptr.update_particles().particles
+    }
+
+    #[no_mangle]
+    pub extern "C" fn prova_test_123() {
+        println!("Hello World");
     }
 }

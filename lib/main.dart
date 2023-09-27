@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:n_body_dart_ffi/constants.dart';
 import 'package:n_body_dart_ffi/ffi_binder.dart';
+import 'package:n_body_dart_ffi/flutter_ffi_gen.dart';
 import 'package:n_body_dart_ffi/models.dart';
 import 'package:n_body_dart_ffi/painters/n_body.dart';
 
@@ -41,6 +42,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var particlesAmount = 3000;
   var method = Method.dart;
+  Pointer<NBody> ffiRust = nullptr;
 
   @override
   Widget build(BuildContext context) {
@@ -55,16 +57,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
-        var aaa = FFIBinder().nativeBinding.init(
-            particlesAmount,
-            screenSize.width,
-            screenSize.height,
-            Constants.minMass,
-            Constants.maxMass,
-            
-          );
+        FFIBinder().nativeBinding.prova_test_123();
+        ffiRust = FFIBinder().nativeBinding.init(
+              particlesAmount,
+              screenSize.width,
+              screenSize.height,
+              Constants.minMass,
+              Constants.maxMass,
+              ffiRust,
+            );
 
-        inspect(aaa);
+        inspect(ffiRust);
 
         // FFIBinder().nativeBinding.update_particles();
         setState(() {

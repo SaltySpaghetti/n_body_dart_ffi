@@ -64,6 +64,14 @@ class FFINativeBinding {
               ffi.Pointer<NBody>)>>('update_particles');
   late final _update_particles = _update_particlesPtr.asFunction<
       ffi.Pointer<ffi.Pointer<Particle>> Function(ffi.Pointer<NBody>)>();
+
+  void prova_test_123() {
+    return _prova_test_123();
+  }
+
+  late final _prova_test_123Ptr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('prova_test_123');
+  late final _prova_test_123 = _prova_test_123Ptr.asFunction<void Function()>();
 }
 
 final class NBody extends ffi.Opaque {}
