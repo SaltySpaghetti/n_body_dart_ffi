@@ -15,9 +15,9 @@ mod capi {
     ) -> Box<NBody> {
 
         //Dropping previous pointer if init() is re-called
-        if !previous_ptr.is_none()
+        if previous_ptr.is_some()
         {
-            drop(previous_ptr);
+            drop(previous_ptr.unwrap());
         }
 
         let config = SimulationConfig {

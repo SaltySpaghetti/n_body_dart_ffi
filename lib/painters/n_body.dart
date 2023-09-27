@@ -1,8 +1,12 @@
+import 'dart:ffi' as ffi;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:n_body_dart_ffi/flutter_ffi_gen.dart';
 import 'package:n_body_dart_ffi/models.dart';
 import 'package:n_body_dart_ffi/painters/dart_native_painter.dart';
 import 'package:n_body_dart_ffi/painters/dart_painter.dart';
+import 'package:n_body_dart_ffi/painters/ffi_painter.dart';
 
 class NBodyDrawer extends StatefulWidget {
   final Method method;
@@ -68,6 +72,9 @@ class _NBodyDrawerState extends State<NBodyDrawer>
         simulationManager = NBodySimulationManagerFFI(
           particlesAmount: widget.particlesAmount,
           canvasSize: widget.canvasSize,
+        )..init();
+        painter = NBodyPainterFFI(
+          particles: simulationManager.particles as ffi.Pointer<ffi.Pointer<Particle>>,
         );
     }
 

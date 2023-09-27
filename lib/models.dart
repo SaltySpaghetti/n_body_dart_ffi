@@ -1,9 +1,12 @@
+import 'dart:ffi';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:n_body_dart_ffi/constants.dart';
 import 'package:n_body_dart_ffi/extensions.dart';
+import 'package:n_body_dart_ffi/ffi_binder.dart';
+import 'package:n_body_dart_ffi/flutter_ffi_gen.dart';
 import 'package:vector_math/vector_math_64.dart';
 
 enum Method {
@@ -60,16 +63,16 @@ class ParticleDartNative {
 abstract class SimulationManager<T> {
   final int particlesAmount;
   final ui.Size canvasSize;
-  late List<T> _particles;
+  late T _particles;
 
   SimulationManager({required this.particlesAmount, required this.canvasSize});
 
   void init() {}
   void updateParticles() {}
-  List<T> get particles => _particles;
+  T get particles => _particles;
 }
 
-class NBodySimulationManagerDart extends SimulationManager<ParticleDart> {
+class NBodySimulationManagerDart extends SimulationManager<List<ParticleDart>> {
   NBodySimulationManagerDart({
     required super.particlesAmount,
     required super.canvasSize,
@@ -157,7 +160,7 @@ class NBodySimulationManagerDart extends SimulationManager<ParticleDart> {
 }
 
 class NBodySimulationManagerDartNative
-    extends SimulationManager<ParticleDartNative> {
+    extends SimulationManager<List<ParticleDartNative>> {
   NBodySimulationManagerDartNative({
     required super.particlesAmount,
     required super.canvasSize,
@@ -239,9 +242,31 @@ class NBodySimulationManagerDartNative
   }
 }
 
-class NBodySimulationManagerFFI extends SimulationManager {
+class NBodySimulationManagerFFI
+    extends SimulationManager<Pointer<Pointer<Particle>>> {
   NBodySimulationManagerFFI({
     required super.particlesAmount,
     required super.canvasSize,
   });
+
+  Pointer<NBody> ffiRust = nullptr;
+
+  @override
+  void init() {
+    FFIBinder().nativeBinding.prova_test_123();
+    ffiRust = FFIBinder().nativeBinding.init(
+          particlesAmount,
+          canvasSize.width,
+          canvasSize.height,
+          Constants.minMass,
+          Constants.maxMass,
+          ffiRust,
+        );
+    updateParticles();
+  }
+
+  @override
+  void updateParticles() {
+    _particles = FFIBinder().nativeBinding.update_particles(ffiRust);
+  }
 }

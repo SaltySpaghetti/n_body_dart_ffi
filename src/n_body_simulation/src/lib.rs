@@ -90,7 +90,7 @@ impl NBody {
 
         for i in 0..particles_amount {
             self.particles[i].force = 0.0;
-            for j in i..particles_amount {
+            for j in i+1..particles_amount {
                 let tmp_dist = (
                     self.particles[i].pos_x - self.particles[j].pos_x,
                     self.particles[i].pos_y - self.particles[j].pos_y,
