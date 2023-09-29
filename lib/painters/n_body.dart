@@ -5,9 +5,10 @@ import 'package:flutter/scheduler.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:n_body_dart_ffi/flutter_ffi_gen.dart';
 import 'package:n_body_dart_ffi/models.dart';
+import 'package:n_body_dart_ffi/painters/c_painter.dart';
 import 'package:n_body_dart_ffi/painters/dart_native_painter.dart';
 import 'package:n_body_dart_ffi/painters/dart_painter.dart';
-import 'package:n_body_dart_ffi/painters/ffi_painter.dart';
+import 'package:n_body_dart_ffi/painters/rust_painter.dart';
 
 class NBodyDrawer extends StatefulWidget {
   final Size canvasSize;
@@ -23,7 +24,7 @@ class NBodyDrawer extends StatefulWidget {
 
 class _NBodyDrawerState extends State<NBodyDrawer>
     with TickerProviderStateMixin {
-  var method = Method.ffi;
+  var method = Method.c;
   var particlesAmount = 3000;
 
   late CustomPainter painter;
@@ -71,15 +72,27 @@ class _NBodyDrawerState extends State<NBodyDrawer>
         painter = NBodyPainterDartNative(
           particles: simulationManager.particles as List<ParticleDartNative>,
         );
-      case Method.ffi:
-        simulationManager = NBodySimulationManagerFFI(
+      case Method.rust:
+        simulationManager = NBodySimulationManagerRust(
           particlesAmount: particlesAmount,
           canvasSize: widget.canvasSize,
         )..init();
-        painter = NBodyPainterFFI(
+        painter = NBodyPainterRust(
           particles:
               simulationManager.particles as ffi.Pointer<ffi.Pointer<Particle>>,
         );
+      case Method.c:
+        simulationManager = NBodySimulationManagerC(
+          particlesAmount: particlesAmount,
+          canvasSize: widget.canvasSize,
+        )..init();
+        painter = NBodyPainterC(
+          particles:
+              simulationManager.particles as ffi.Pointer<Particle>,
+        );
+        
+      case Method.python:
+        // TODO: Handle this case.
     }
 
     ticker = Ticker(tick);

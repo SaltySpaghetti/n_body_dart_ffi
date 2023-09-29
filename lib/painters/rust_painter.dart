@@ -3,10 +3,10 @@ import 'dart:ffi' as ffi;
 import 'package:flutter/material.dart';
 import 'package:n_body_dart_ffi/flutter_ffi_gen.dart';
 
-class NBodyPainterFFI extends CustomPainter {
+class NBodyPainterRust extends CustomPainter {
   final ffi.Pointer<ffi.Pointer<Particle>> particles;
 
-  NBodyPainterFFI({required this.particles});
+  NBodyPainterRust({required this.particles});
 
   @override
   void paint(Canvas canvas, Size size) {

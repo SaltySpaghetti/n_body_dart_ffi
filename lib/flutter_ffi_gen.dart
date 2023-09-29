@@ -64,6 +64,39 @@ class FFINativeBinding {
               ffi.Pointer<NBody>)>>('update_particles');
   late final _update_particles = _update_particlesPtr.asFunction<
       ffi.Pointer<ffi.Pointer<Particle>> Function(ffi.Pointer<NBody>)>();
+
+  void init_c(
+    int particles_amount,
+    double canvas_width,
+    double canvas_height,
+    double min_mass,
+    double max_mass,
+  ) {
+    return _init_c(
+      particles_amount,
+      canvas_width,
+      canvas_height,
+      min_mass,
+      max_mass,
+    );
+  }
+
+  late final _init_cPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int, ffi.Float, ffi.Float, ffi.Float, ffi.Float)>>('init_c');
+  late final _init_c = _init_cPtr
+      .asFunction<void Function(int, double, double, double, double)>();
+
+  ffi.Pointer<Particle> update_particles_c() {
+    return _update_particles_c();
+  }
+
+  late final _update_particles_cPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<Particle> Function()>>(
+          'update_particles_c');
+  late final _update_particles_c =
+      _update_particles_cPtr.asFunction<ffi.Pointer<Particle> Function()>();
 }
 
 final class NBody extends ffi.Opaque {}

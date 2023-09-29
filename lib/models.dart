@@ -12,7 +12,9 @@ import 'package:vector_math/vector_math_64.dart';
 enum Method {
   dart,
   dartNative,
-  ffi;
+  rust,
+  c,
+  python;
 
   String methodName() {
     switch (this) {
@@ -20,8 +22,12 @@ enum Method {
         return "Dart";
       case Method.dartNative:
         return "Dart solo tipi primitivi + Float64List";
-      case Method.ffi:
-        return "FFI";
+      case Method.rust:
+        return "Rust";
+      case Method.c:
+        return "C/C++";
+      case Method.python:
+        return "Python";
     }
   }
 }
@@ -242,9 +248,9 @@ class NBodySimulationManagerDartNative
   }
 }
 
-class NBodySimulationManagerFFI
+class NBodySimulationManagerRust
     extends SimulationManager<Pointer<Pointer<Particle>>> {
-  NBodySimulationManagerFFI({
+  NBodySimulationManagerRust({
     required super.particlesAmount,
     required super.canvasSize,
   });
@@ -267,5 +273,31 @@ class NBodySimulationManagerFFI
   @override
   void updateParticles() {
     _particles = FFIBinder().nativeBinding.update_particles(ffiRust);
+  }
+}
+
+
+class NBodySimulationManagerC
+    extends SimulationManager<Pointer<Particle>> {
+  NBodySimulationManagerC({
+    required super.particlesAmount,
+    required super.canvasSize,
+  });
+
+  @override
+  void init() {
+    FFIBinder().nativeBinding.init_c(
+          particlesAmount,
+          canvasSize.width,
+          canvasSize.height,
+          Constants.minMass,
+          Constants.maxMass,
+        );
+    updateParticles();
+  }
+
+  @override
+  void updateParticles() {
+    _particles = FFIBinder().nativeBinding.update_particles_c();
   }
 }

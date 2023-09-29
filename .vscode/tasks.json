@@ -3,13 +3,13 @@
     "tasks": [
         {
             "label": "compile linux debug",
-            "command": "cd ${workspaceFolder}/src/n_body_simulation; cargo build --features capi; flutter build linux -t lib/main.dart --debug",
+            "command": "cd ${workspaceFolder}/src/n_body_simulation; cargo build -r --features capi; flutter build linux -t lib/main.dart --debug",
             // "args": ["build", "linux"],
             "type": "shell"
         },
         {
             "label": "compile windows debug",
-            "command": "cd ${workspaceFolder}/src/n_body_simulation; cargo build --features capi; flutter build windows -t lib/main.dart --debug",
+            "command": "cd ${workspaceFolder}/src/n_body_simulation; cargo build -r --features capi; flutter build windows -t lib/main.dart --debug",
             // "args": ["build", "linux"],
             "type": "shell"
         }

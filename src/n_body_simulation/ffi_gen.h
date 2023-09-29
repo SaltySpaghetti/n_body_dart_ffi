@@ -18,3 +18,11 @@ struct NBody *init(int particles_amount,
                    struct NBody *previous_ptr);
 
 const struct Particle **update_particles(struct NBody *n_body_ptr);
+
+void init_c(int particles_amount,
+            float canvas_width,
+            float canvas_height,
+            float min_mass,
+            float max_mass);
+
+const struct Particle *update_particles_c();
