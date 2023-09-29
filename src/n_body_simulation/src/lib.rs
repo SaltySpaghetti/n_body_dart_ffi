@@ -4,8 +4,6 @@ use rand::Rng;
 
 const DELTA_T: f32 = 0.0001;
 
-mod capi;
-
 #[derive(Debug)]
 pub struct Particle {
     pub mass: f32,

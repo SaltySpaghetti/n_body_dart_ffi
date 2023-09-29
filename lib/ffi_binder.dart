@@ -18,6 +18,11 @@ class FFIBinder {
   }
 
   void initialize() {
+    if (Platform.isMacOS) {
+      nativeLib = DynamicLibrary.open('libn_body_simulation.dylib');
+      return;
+    }
+
     nativeLib = Platform.isLinux
         ? DynamicLibrary.open(
             'src/n_body_simulation/target/release/libn_body_simulation.so')
