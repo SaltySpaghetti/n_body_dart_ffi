@@ -2,6 +2,7 @@ import 'dart:ffi' as ffi;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:n_body_dart_ffi/flutter_ffi_gen.dart';
 import 'package:n_body_dart_ffi/models.dart';
 import 'package:n_body_dart_ffi/painters/dart_native_painter.dart';
@@ -9,15 +10,11 @@ import 'package:n_body_dart_ffi/painters/dart_painter.dart';
 import 'package:n_body_dart_ffi/painters/ffi_painter.dart';
 
 class NBodyDrawer extends StatefulWidget {
-  final Method method;
-  final int particlesAmount;
   final Size canvasSize;
 
   const NBodyDrawer({
-    super.key,
-    required this.particlesAmount,
     required this.canvasSize,
-    required this.method,
+    super.key,
   });
 
   @override
@@ -26,35 +23,41 @@ class NBodyDrawer extends StatefulWidget {
 
 class _NBodyDrawerState extends State<NBodyDrawer>
     with TickerProviderStateMixin {
+  var method = Method.ffi;
+  var particlesAmount = 3000;
+
   late CustomPainter painter;
   late Ticker ticker;
   late Stopwatch stopwatch;
+
   var frames = 0;
   var previousSecond = 0;
   var lastSecondFrames = 0;
+  final languageIcons = [
+    Icon(MdiIcons.languageRust),
+    Icon(MdiIcons.languageC),
+    Icon(MdiIcons.languagePython),
+    Icon(MdiIcons.sackPercent),
+  ];
 
+  late List<bool> selectedLanguage;
   late SimulationManager simulationManager;
-
-  @override
-  void didUpdateWidget(covariant NBodyDrawer oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.method != widget.method) {
-      init();
-    }
-  }
 
   @override
   void initState() {
     super.initState();
+    selectedLanguage = [
+      true,
+      ...List.generate(languageIcons.length - 1, (index) => false)
+    ];
     init();
   }
 
   void init() {
-    switch (widget.method) {
+    switch (method) {
       case Method.dart:
         simulationManager = NBodySimulationManagerDart(
-          particlesAmount: widget.particlesAmount,
+          particlesAmount: particlesAmount,
           canvasSize: widget.canvasSize,
         )..init();
         painter = NBodyPainterDart(
@@ -62,7 +65,7 @@ class _NBodyDrawerState extends State<NBodyDrawer>
         );
       case Method.dartNative:
         simulationManager = NBodySimulationManagerDartNative(
-          particlesAmount: widget.particlesAmount,
+          particlesAmount: particlesAmount,
           canvasSize: widget.canvasSize,
         )..init();
         painter = NBodyPainterDartNative(
@@ -70,11 +73,12 @@ class _NBodyDrawerState extends State<NBodyDrawer>
         );
       case Method.ffi:
         simulationManager = NBodySimulationManagerFFI(
-          particlesAmount: widget.particlesAmount,
+          particlesAmount: particlesAmount,
           canvasSize: widget.canvasSize,
         )..init();
         painter = NBodyPainterFFI(
-          particles: simulationManager.particles as ffi.Pointer<ffi.Pointer<Particle>>,
+          particles:
+              simulationManager.particles as ffi.Pointer<ffi.Pointer<Particle>>,
         );
     }
 
@@ -126,13 +130,26 @@ class _NBodyDrawerState extends State<NBodyDrawer>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.method.methodName(),
+                    method.methodName(),
                     style: const TextStyle(fontSize: 25),
                   ),
                   Text(
                     "FPS: $lastSecondFrames",
                     style: const TextStyle(fontSize: 25),
                   ),
+                  const SizedBox(height: 16.0),
+                  ToggleButtons(
+                    borderRadius: BorderRadius.circular(8),
+                    isSelected: selectedLanguage,
+                    children: languageIcons,
+                    onPressed: (index) {
+                      setState(() {
+                        selectedLanguage = List.generate(
+                            languageIcons.length, (index) => false);
+                        selectedLanguage[index] = true;
+                      });
+                    },
+                  )
                 ],
               ),
             ),

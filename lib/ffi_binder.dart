@@ -19,11 +19,14 @@ class FFIBinder {
 
   void initialize() {
     nativeLib = Platform.isLinux
-        ? DynamicLibrary.open('src/n_body_simulation/target/release/libn_body_simulation.so')
+        ? DynamicLibrary.open(
+            'src/n_body_simulation/target/release/libn_body_simulation.so')
         : (Platform.isAndroid
-            ? DynamicLibrary.open('src/n_body_simulation/target/debug/libn_body_simulation.so')
+            ? DynamicLibrary.open(
+                'src/n_body_simulation/target/release/libn_body_simulation.so')
             : (Platform.isWindows
-                ? DynamicLibrary.open('src/n_body_simulation/target/debug/n_body_simulation.dll')
+                ? DynamicLibrary.open(
+                    'src/n_body_simulation/target/release/n_body_simulation.dll')
                 : DynamicLibrary.process()));
   }
 }

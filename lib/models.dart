@@ -253,7 +253,6 @@ class NBodySimulationManagerFFI
 
   @override
   void init() {
-    FFIBinder().nativeBinding.prova_test_123();
     ffiRust = FFIBinder().nativeBinding.init(
           particlesAmount,
           canvasSize.width,

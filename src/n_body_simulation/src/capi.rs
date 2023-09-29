@@ -1,4 +1,4 @@
-#[cfg(feature = "capi")]
+// #[cfg(feature = "capi")]
 mod capi {
     use std::mem::drop;
 
@@ -13,10 +13,8 @@ mod capi {
         max_mass: f32,
         previous_ptr: Option<Box<NBody>>,
     ) -> Box<NBody> {
-
         //Dropping previous pointer if init() is re-called
-        if previous_ptr.is_some()
-        {
+        if previous_ptr.is_some() {
             drop(previous_ptr.unwrap());
         }
 
@@ -36,10 +34,5 @@ mod capi {
     #[no_mangle]
     pub extern "C" fn update_particles(n_body_ptr: &mut NBody) -> *const Vec<Particle> {
         &n_body_ptr.update_particles().particles
-    }
-
-    #[no_mangle]
-    pub extern "C" fn prova_test_123() {
-        println!("Hello World");
     }
 }

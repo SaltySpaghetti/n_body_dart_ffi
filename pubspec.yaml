@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   vector_math: ^2.1.4
   ffigen: ^9.0.1
+  material_design_icons_flutter: 7.0.7296
 
 dev_dependencies:
   flutter_test:
