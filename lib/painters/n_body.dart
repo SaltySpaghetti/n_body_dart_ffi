@@ -1,8 +1,11 @@
 import 'dart:ffi' as ffi;
 
+import 'package:ffi_c_plugin/ffi_c_plugin.dart' as c_plugin;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:n_body_dart_ffi/constants.dart';
 import 'package:n_body_dart_ffi/flutter_ffi_gen.dart';
 import 'package:n_body_dart_ffi/models.dart';
 import 'package:n_body_dart_ffi/painters/c_painter.dart';
@@ -24,7 +27,7 @@ class NBodyDrawer extends StatefulWidget {
 
 class _NBodyDrawerState extends State<NBodyDrawer>
     with TickerProviderStateMixin {
-  var method = Method.c;
+  var method = Method.dartNative;
   var particlesAmount = 3000;
 
   late CustomPainter painter;
@@ -47,6 +50,16 @@ class _NBodyDrawerState extends State<NBodyDrawer>
   @override
   void initState() {
     super.initState();
+    c_plugin.bindings.init_c(
+      particlesAmount,
+      widget.canvasSize.width,
+      widget.canvasSize.height,
+      Constants.minMass,
+      Constants.maxMass,
+    );
+
+    final particles = c_plugin.bindings.update_particles_c();
+
     selectedLanguage = [
       true,
       ...List.generate(languageIcons.length - 1, (index) => false)
@@ -87,12 +100,11 @@ class _NBodyDrawerState extends State<NBodyDrawer>
           canvasSize: widget.canvasSize,
         )..init();
         painter = NBodyPainterC(
-          particles:
-              simulationManager.particles as ffi.Pointer<Particle>,
+          particles: simulationManager.particles as ffi.Pointer<Particle>,
         );
-        
+
       case Method.python:
-        // TODO: Handle this case.
+      // TODO: Handle this case.
     }
 
     ticker = Ticker(tick);
@@ -146,10 +158,7 @@ class _NBodyDrawerState extends State<NBodyDrawer>
                     method.methodName(),
                     style: const TextStyle(fontSize: 25),
                   ),
-                  Text(
-                    "FPS: $lastSecondFrames",
-                    style: const TextStyle(fontSize: 25),
-                  ),
+                  const FPSCounter(),
                   const SizedBox(height: 16.0),
                   ToggleButtons(
                     borderRadius: BorderRadius.circular(8),
@@ -176,5 +185,61 @@ class _NBodyDrawerState extends State<NBodyDrawer>
   void dispose() {
     ticker.dispose();
     super.dispose();
+  }
+}
+
+class FPSCounter extends StatefulWidget {
+  const FPSCounter({super.key});
+
+  @override
+  State<FPSCounter> createState() => _FPSCounterState();
+}
+
+class _FPSCounterState extends State<FPSCounter> {
+  int fps = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addTimingsCallback((timings) {
+      final FrameTimingSummarizer frameTimes = FrameTimingSummarizer(timings);
+
+      setState(() {
+        fps = 1000000.0 ~/ frameTimes.averageFrameBuildTime.inMicroseconds;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.only(left: 16.0),
+      height: 72,
+      width: 128,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            'FPS: ',
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          ),
+          Text(
+            '$fps',
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
