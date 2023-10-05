@@ -1,22 +1,22 @@
 import 'dart:ffi' as ffi;
 
+import 'package:ffi_rust_plugin/ffi_rust_plugin_bindings_generated.dart';
 import 'package:flutter/material.dart';
-import 'package:n_body_dart_ffi/flutter_ffi_gen.dart';
 
 class NBodyPainterRust extends CustomPainter {
-  final ffi.Pointer<ffi.Pointer<Particle>> particles;
+  final ffi.Pointer<ffi.Pointer<ParticleRust>> particles;
+  final int particlesAmount;
 
-  NBodyPainterRust({required this.particles});
+  NBodyPainterRust({
+    required this.particles,
+    required this.particlesAmount,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..color = Colors.yellow;
-    // for (var i = 0; i < 10; i++) {
-    //   var x = particles.value[i].pos_x;
-    //   print('$x');
-    // }
 
-    for (var i=0; i<3000; i++) {
+    for (var i = 0; i < particlesAmount; i++) {
       canvas.drawCircle(
         Offset(particles.value[i].pos_x, particles.value[i].pos_y),
         particles.value[i].mass / 1500,

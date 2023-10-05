@@ -1,12 +1,9 @@
 import 'dart:ffi' as ffi;
 
-import 'package:ffi_c_plugin/ffi_c_plugin.dart' as c_plugin;
+import 'package:ffi_c_plugin/ffi_c_plugin_bindings_generated.dart';
+import 'package:ffi_rust_plugin/ffi_rust_plugin_bindings_generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:n_body_dart_ffi/constants.dart';
-import 'package:n_body_dart_ffi/flutter_ffi_gen.dart';
 import 'package:n_body_dart_ffi/models.dart';
 import 'package:n_body_dart_ffi/painters/c_painter.dart';
 import 'package:n_body_dart_ffi/painters/dart_native_painter.dart';
@@ -15,9 +12,13 @@ import 'package:n_body_dart_ffi/painters/rust_painter.dart';
 
 class NBodyDrawer extends StatefulWidget {
   final Size canvasSize;
+  final Method method;
+  final int particlesAmount;
 
   const NBodyDrawer({
     required this.canvasSize,
+    required this.method,
+    required this.particlesAmount,
     super.key,
   });
 
@@ -27,51 +28,23 @@ class NBodyDrawer extends StatefulWidget {
 
 class _NBodyDrawerState extends State<NBodyDrawer>
     with TickerProviderStateMixin {
-  var method = Method.dartNative;
-  var particlesAmount = 3000;
-
   late CustomPainter painter;
   late Ticker ticker;
-  late Stopwatch stopwatch;
 
-  var frames = 0;
-  var previousSecond = 0;
-  var lastSecondFrames = 0;
-  final languageIcons = [
-    Icon(MdiIcons.languageRust),
-    Icon(MdiIcons.languageC),
-    Icon(MdiIcons.languagePython),
-    Icon(MdiIcons.sackPercent),
-  ];
-
-  late List<bool> selectedLanguage;
   late SimulationManager simulationManager;
 
   @override
   void initState() {
     super.initState();
-    c_plugin.bindings.init_c(
-      particlesAmount,
-      widget.canvasSize.width,
-      widget.canvasSize.height,
-      Constants.minMass,
-      Constants.maxMass,
-    );
 
-    final particles = c_plugin.bindings.update_particles_c();
-
-    selectedLanguage = [
-      true,
-      ...List.generate(languageIcons.length - 1, (index) => false)
-    ];
     init();
   }
 
   void init() {
-    switch (method) {
+    switch (widget.method) {
       case Method.dart:
         simulationManager = NBodySimulationManagerDart(
-          particlesAmount: particlesAmount,
+          particlesAmount: widget.particlesAmount,
           canvasSize: widget.canvasSize,
         )..init();
         painter = NBodyPainterDart(
@@ -79,7 +52,7 @@ class _NBodyDrawerState extends State<NBodyDrawer>
         );
       case Method.dartNative:
         simulationManager = NBodySimulationManagerDartNative(
-          particlesAmount: particlesAmount,
+          particlesAmount: widget.particlesAmount,
           canvasSize: widget.canvasSize,
         )..init();
         painter = NBodyPainterDartNative(
@@ -87,20 +60,22 @@ class _NBodyDrawerState extends State<NBodyDrawer>
         );
       case Method.rust:
         simulationManager = NBodySimulationManagerRust(
-          particlesAmount: particlesAmount,
+          particlesAmount: widget.particlesAmount,
           canvasSize: widget.canvasSize,
         )..init();
         painter = NBodyPainterRust(
-          particles:
-              simulationManager.particles as ffi.Pointer<ffi.Pointer<Particle>>,
+          particles: simulationManager.particles
+              as ffi.Pointer<ffi.Pointer<ParticleRust>>,
+          particlesAmount: widget.particlesAmount,
         );
       case Method.c:
         simulationManager = NBodySimulationManagerC(
-          particlesAmount: particlesAmount,
+          particlesAmount: widget.particlesAmount,
           canvasSize: widget.canvasSize,
         )..init();
         painter = NBodyPainterC(
           particles: simulationManager.particles as ffi.Pointer<Particle>,
+          particlesAmount: widget.particlesAmount,
         );
 
       case Method.python:
@@ -109,22 +84,20 @@ class _NBodyDrawerState extends State<NBodyDrawer>
 
     ticker = Ticker(tick);
     ticker.start();
-    stopwatch = Stopwatch();
-    stopwatch.start();
+  }
+
+  @override
+  void dispose() {
+    ticker.dispose();
+    super.dispose();
   }
 
   void tick(Duration elapsed) {
-    if (stopwatch.elapsedMilliseconds > 1000) {
-      lastSecondFrames = frames;
-      stopwatch.reset();
-      frames = 1;
-    }
-
-    setState(() {
+    if (context.mounted) {
+      setState(() {
       simulationManager.updateParticles();
-      previousSecond = elapsed.inSeconds;
-      frames++;
     });
+    }
   }
 
   @override
@@ -138,108 +111,7 @@ class _NBodyDrawerState extends State<NBodyDrawer>
             size: MediaQuery.sizeOf(context),
           ),
         ),
-        Positioned(
-          left: 16,
-          bottom: 16,
-          child: IntrinsicHeight(
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: 16,
-                horizontal: 24,
-              ),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 46, 46, 46),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    method.methodName(),
-                    style: const TextStyle(fontSize: 25),
-                  ),
-                  const FPSCounter(),
-                  const SizedBox(height: 16.0),
-                  ToggleButtons(
-                    borderRadius: BorderRadius.circular(8),
-                    isSelected: selectedLanguage,
-                    children: languageIcons,
-                    onPressed: (index) {
-                      setState(() {
-                        selectedLanguage = List.generate(
-                            languageIcons.length, (index) => false);
-                        selectedLanguage[index] = true;
-                      });
-                    },
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
       ],
-    );
-  }
-
-  @override
-  void dispose() {
-    ticker.dispose();
-    super.dispose();
-  }
-}
-
-class FPSCounter extends StatefulWidget {
-  const FPSCounter({super.key});
-
-  @override
-  State<FPSCounter> createState() => _FPSCounterState();
-}
-
-class _FPSCounterState extends State<FPSCounter> {
-  int fps = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addTimingsCallback((timings) {
-      final FrameTimingSummarizer frameTimes = FrameTimingSummarizer(timings);
-
-      setState(() {
-        fps = 1000000.0 ~/ frameTimes.averageFrameBuildTime.inMicroseconds;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      margin: const EdgeInsets.only(left: 16.0),
-      height: 72,
-      width: 128,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            'FPS: ',
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
-          Text(
-            '$fps',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
