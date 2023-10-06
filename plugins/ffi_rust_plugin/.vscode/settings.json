@@ -1,0 +1,6 @@
+{
+    "cmake.sourceDirectory": "/home/deimos/FLUTTER/tmp/ffi_rust_plugin/example/linux",
+    "files.associations": {
+        "ffi_rust_plugin.h": "c"
+    }
+}

@@ -1,0 +1,44 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "n_body_dart_ffi",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "n_body_dart_ffi (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "n_body_dart_ffi (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "Debug C native Linux",
+            "preLaunchTask": "compile C linux debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "args": [],
+            "program": "${workspaceFolder}/example/build/linux/x64/debug/bundle/ffi_c_plugin_example",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug C native Windows",
+            "preLaunchTask": "compile C windows debug",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "args": [],
+            "program": "${workspaceFolder}/example/build/windows/runner/Debug/ffi_c_plugin_example.exe",
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

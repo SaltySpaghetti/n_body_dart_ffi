@@ -95,8 +95,8 @@ class _NBodyDrawerState extends State<NBodyDrawer>
   void tick(Duration elapsed) {
     if (context.mounted) {
       setState(() {
-      simulationManager.updateParticles();
-    });
+        simulationManager.updateParticles();
+      });
     }
   }
 
