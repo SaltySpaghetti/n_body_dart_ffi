@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   late int sumResult;
   late Future<int> sumAsyncResult;
   Pointer<NBody> ffiRust = nullptr;
-  Pointer<Pointer<Particle>> particles = nullptr;
+  Pointer<Pointer<ParticleRust>> particles = nullptr;
 
   @override
   void initState() {
