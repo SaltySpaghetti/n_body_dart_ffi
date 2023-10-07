@@ -45,7 +45,7 @@ class FfiCPluginBindings {
 
   late final _init_cPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(ffi.Int, ffi.Double, ffi.Double, ffi.Double,
+          ffi.Void Function(ffi.Int32, ffi.Double, ffi.Double, ffi.Double,
               ffi.Double)>>('init_c');
   late final _init_c = _init_cPtr
       .asFunction<void Function(int, double, double, double, double)>();

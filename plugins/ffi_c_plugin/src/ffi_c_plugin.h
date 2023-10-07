@@ -15,13 +15,14 @@
 // #endif
 
 #if _WIN32
-#define FFI_PLUGIN_EXPORT __declspec(dllexport)
+#define FFI_PLUGIN_EXPORT extern "C" __declspec(dllexport)
+#include <windows.h>
 #else
 #define FFI_PLUGIN_EXPORT extern "C" __attribute__((visibility("default"))) __attribute__((used))
 #endif
 
 FFI_PLUGIN_EXPORT void init_c(
-    int particles_amount,
+    int32_t particles_amount,
     double canvas_width,
     double canvas_height,
     double min_mass,

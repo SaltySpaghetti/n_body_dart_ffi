@@ -1,7 +1,8 @@
+import 'dart:ffi';
+
 import 'package:ffi_rust_plugin/ffi_rust_plugin_bindings_generated.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:ffi_rust_plugin/ffi_rust_plugin.dart' as ffi_rust_plugin;
 
@@ -20,11 +21,13 @@ class _MyAppState extends State<MyApp> {
   late int sumResult;
   late Future<int> sumAsyncResult;
   Pointer<NBody> ffiRust = nullptr;
-  Pointer<Pointer<ParticleRust>> particles = nullptr;
+  Pointer<Pointer<ParticleRust>> p = nullptr;
+  late TextEditingController controller;
 
   @override
   void initState() {
     super.initState();
+    controller = TextEditingController(text: '');
   }
 
   @override
@@ -55,11 +58,18 @@ class _MyAppState extends State<MyApp> {
                 FloatingActionButton(
                   child: const Text('upd'),
                   onPressed: () {
-                    particles = ffi_rust_plugin.updateParticlesRust(ffiRust);
-                    for (int i = 0; i < 3; i++) {
-                      print('${particles.value[i].pos_x}');
+                    p = ffi_rust_plugin.updateParticlesRust(ffiRust);
+                    controller.text = '';
+                    for (var i = 0; i < 3; i++) {
+                      controller.text =
+                          '${controller.text}  ${p.value[i].pos_x}';
                     }
+                    setState(() {});
                   },
+                ),
+                TextField(
+                  readOnly: true,
+                  controller: controller,
                 ),
               ],
             ),

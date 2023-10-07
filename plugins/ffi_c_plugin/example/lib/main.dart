@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -17,10 +19,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late int sumResult;
   late Future<int> sumAsyncResult;
+  late TextEditingController controller;
 
   @override
   void initState() {
     super.initState();
+    controller = TextEditingController(text: '');
   }
 
   @override
@@ -38,6 +42,7 @@ class _MyAppState extends State<MyApp> {
                 FloatingActionButton(
                   child: const Text('init'),
                   onPressed: () {
+                    controller.text = '';
                     ffi_c_plugin.initC(
                       3000,
                       100,
@@ -45,13 +50,23 @@ class _MyAppState extends State<MyApp> {
                       1000,
                       6000,
                     );
+                    setState(() {});
                   },
                 ),
                 FloatingActionButton(
                   child: const Text('upd'),
                   onPressed: () {
-                    ffi_c_plugin.updateParticlesC();
+                    var p = ffi_c_plugin.updateParticlesC();
+                    controller.text = '';
+                    for (var i = 0; i < 3; i++) {
+                      controller.text = '${controller.text}  ${p[i].pos_x}';
+                    }
+                    setState(() {});
                   },
+                ),
+                TextField(
+                  readOnly: true,
+                  controller: controller,
                 ),
               ],
             ),

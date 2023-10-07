@@ -1,5 +1,5 @@
 {
-    "cmake.sourceDirectory": "/home/deimos/FLUTTER/tmp/ffi_c_plugin/example/linux",
+    "cmake.sourceDirectory": "C:/workspace/n_body_dart_ffi/plugins/ffi_c_plugin/example/linux",
     "java.compile.nullAnalysis.mode": "disabled",
     "files.associations": {
         "chrono": "cpp",

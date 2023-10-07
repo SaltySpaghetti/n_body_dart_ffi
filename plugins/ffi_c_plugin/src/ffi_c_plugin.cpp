@@ -4,7 +4,7 @@
 
 NBody nbody = NBody(0, 0.0, 0.0, 0.0, 0.0);
 
-void init_c(int particles_amount,
+void init_c(int32_t particles_amount,
           double canvas_width,
           double canvas_height,
           double min_mass,

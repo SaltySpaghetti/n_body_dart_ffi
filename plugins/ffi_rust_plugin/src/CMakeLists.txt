@@ -29,7 +29,11 @@ endif()
 install(
   FILES "rust/target/release/${SIM_LIB_NAME}" 
   DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
-message("**************************************************************")
+# configure_file(
+#   "rust/target/release/${SIM_LIB_NAME}" 
+#   "${CMAKE_INSTALL_PREFIX}/lib"
+#   COPYONLY)
+message("************************************************************** ${CMAKE_INSTALL_PREFIX}")
 
 
 
