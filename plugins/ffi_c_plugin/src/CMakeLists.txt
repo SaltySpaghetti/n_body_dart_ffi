@@ -20,6 +20,7 @@ add_library(ffi_c_plugin SHARED
 )
 
 set_target_properties(ffi_c_plugin PROPERTIES
+  LINKER_LANGUAGE CXX
   PUBLIC_HEADER ffi_c_plugin.h
   OUTPUT_NAME "ffi_c_plugin"
 )

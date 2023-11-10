@@ -22,7 +22,7 @@
 #endif
 
 FFI_PLUGIN_EXPORT void init_c(
-    int32_t particles_amount,
+    int particles_amount,
     double canvas_width,
     double canvas_height,
     double min_mass,
