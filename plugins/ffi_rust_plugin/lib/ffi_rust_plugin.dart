@@ -1,5 +1,4 @@
 import 'dart:ffi';
-import 'dart:ffi' as ffi;
 import 'dart:io';
 
 import 'ffi_rust_plugin_bindings_generated.dart';
@@ -11,7 +10,7 @@ const String _libName = 'n_body_rust_simulation';
 /// The dynamic library in which the symbols for [FfiRustPluginBindings] can be found.
 final DynamicLibrary _dylib = () {
   if (Platform.isMacOS || Platform.isIOS) {
-    return DynamicLibrary.open('$_libName.framework/$_libName');
+    return DynamicLibrary.open('$_libName.dylib');
   }
   if (Platform.isAndroid || Platform.isLinux) {
     return DynamicLibrary.open('lib$_libName.so');
@@ -25,13 +24,13 @@ final DynamicLibrary _dylib = () {
 /// The bindings to the native functions in [_dylib].
 final FfiRustPluginBindings _bindings = FfiRustPluginBindings(_dylib);
 
-ffi.Pointer<NBody> initRust(
+Pointer<NBody> initRust(
   int particlesAmount,
   double canvasWidth,
   double canvasHeight,
   double minMass,
   double maxMass,
-  ffi.Pointer<NBody> previousPtr,
+  Pointer<NBody> previousPtr,
 ) {
   return _bindings.init(
     particlesAmount,
@@ -43,8 +42,8 @@ ffi.Pointer<NBody> initRust(
   );
 }
 
-ffi.Pointer<ffi.Pointer<ParticleRust>> updateParticlesRust(
-  ffi.Pointer<NBody> nBodyPtr,
+Pointer<Pointer<ParticleRust>> updateParticlesRust(
+  Pointer<NBody> nBodyPtr,
 ) {
   return _bindings.update_particles(nBodyPtr);
 }

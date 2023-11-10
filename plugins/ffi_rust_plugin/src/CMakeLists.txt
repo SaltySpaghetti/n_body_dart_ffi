@@ -19,9 +19,9 @@ execute_process (
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/rust
     OUTPUT_VARIABLE outVar
 )
-if(LINUX)
-    set(SIM_LIB_NAME "libn_body_rust_simulation.so")
-endif()
+
+set(SIM_LIB_NAME "libn_body_rust_simulation.dylib")
+
 if (WIN32)
   set(SIM_LIB_NAME "n_body_rust_simulation.dll")
 endif()

@@ -29,9 +29,9 @@
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
 		92C18699128F4CD5DCE361BE /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B704BA86C003E19D5C00A19A /* Pods_Runner.framework */; };
-		D7B480C22AFEA74C00CB5664 /* libn_body_rust_simulation.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D7B480C12AFEA74C00CB5664 /* libn_body_rust_simulation.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
-		D7B480C32AFEA75400CB5664 /* libn_body_rust_simulation.dylib in Resources */ = {isa = PBXBuildFile; fileRef = D7B480C12AFEA74C00CB5664 /* libn_body_rust_simulation.dylib */; };
-		D7B480C42AFEA75E00CB5664 /* libn_body_rust_simulation.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = D7B480C12AFEA74C00CB5664 /* libn_body_rust_simulation.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D77D3E462AFECFAF008E6BF3 /* n_body_rust_simulation.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D77D3E452AFECFAF008E6BF3 /* n_body_rust_simulation.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
+		D77D3E472AFECFAF008E6BF3 /* n_body_rust_simulation.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = D77D3E452AFECFAF008E6BF3 /* n_body_rust_simulation.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D77D3E482AFECFB6008E6BF3 /* n_body_rust_simulation.dylib in Resources */ = {isa = PBXBuildFile; fileRef = D77D3E452AFECFAF008E6BF3 /* n_body_rust_simulation.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +58,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D7B480C42AFEA75E00CB5664 /* libn_body_rust_simulation.dylib in Embed Libraries */,
+				D77D3E472AFECFAF008E6BF3 /* n_body_rust_simulation.dylib in Embed Libraries */,
 			);
 			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,7 +91,7 @@
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		B704BA86C003E19D5C00A19A /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1884C4595075C89AB3CA022 /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
-		D7B480C12AFEA74C00CB5664 /* libn_body_rust_simulation.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libn_body_rust_simulation.dylib; path = ../plugins/ffi_rust_plugin/src/rust/target/release/libn_body_rust_simulation.dylib; sourceTree = "<group>"; };
+		D77D3E452AFECFAF008E6BF3 /* n_body_rust_simulation.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = n_body_rust_simulation.dylib; path = ../plugins/ffi_rust_plugin/src/rust/target/release/n_body_rust_simulation.dylib; sourceTree = "<group>"; };
 		E1B126E90994F5DA8DC4CA7B /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,7 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7B480C22AFEA74C00CB5664 /* libn_body_rust_simulation.dylib in Frameworks */,
+				D77D3E462AFECFAF008E6BF3 /* n_body_rust_simulation.dylib in Frameworks */,
 				92C18699128F4CD5DCE361BE /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -207,7 +207,7 @@
 		D73912EC22F37F3D000D13A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D7B480C12AFEA74C00CB5664 /* libn_body_rust_simulation.dylib */,
+				D77D3E452AFECFAF008E6BF3 /* n_body_rust_simulation.dylib */,
 				B704BA86C003E19D5C00A19A /* Pods_Runner.framework */,
 				956385B0A75AE8E300E6004A /* Pods_RunnerTests.framework */,
 			);
@@ -322,7 +322,7 @@
 			files = (
 				33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */,
 				33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */,
-				D7B480C32AFEA75400CB5664 /* libn_body_rust_simulation.dylib in Resources */,
+				D77D3E482AFECFB6008E6BF3 /* n_body_rust_simulation.dylib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,10 +578,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
@@ -704,10 +701,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -724,10 +718,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
