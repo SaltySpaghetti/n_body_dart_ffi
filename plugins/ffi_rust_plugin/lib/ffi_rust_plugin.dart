@@ -1,6 +1,6 @@
 import 'dart:ffi';
-import 'dart:io';
 import 'dart:ffi' as ffi;
+import 'dart:io';
 
 import 'ffi_rust_plugin_bindings_generated.dart';
 

@@ -29,6 +29,9 @@
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
 		92C18699128F4CD5DCE361BE /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B704BA86C003E19D5C00A19A /* Pods_Runner.framework */; };
+		D7B480C22AFEA74C00CB5664 /* libn_body_rust_simulation.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D7B480C12AFEA74C00CB5664 /* libn_body_rust_simulation.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
+		D7B480C32AFEA75400CB5664 /* libn_body_rust_simulation.dylib in Resources */ = {isa = PBXBuildFile; fileRef = D7B480C12AFEA74C00CB5664 /* libn_body_rust_simulation.dylib */; };
+		D7B480C42AFEA75E00CB5664 /* libn_body_rust_simulation.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = D7B480C12AFEA74C00CB5664 /* libn_body_rust_simulation.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,14 +52,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		33CC110E2044A8840003C045 /* Bundle Framework */ = {
+		D7B480C02AFEA4A900CB5664 /* Embed Libraries */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D7B480C42AFEA75E00CB5664 /* libn_body_rust_simulation.dylib in Embed Libraries */,
 			);
-			name = "Bundle Framework";
+			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -87,6 +91,7 @@
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		B704BA86C003E19D5C00A19A /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1884C4595075C89AB3CA022 /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D7B480C12AFEA74C00CB5664 /* libn_body_rust_simulation.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libn_body_rust_simulation.dylib; path = ../plugins/ffi_rust_plugin/src/rust/target/release/libn_body_rust_simulation.dylib; sourceTree = "<group>"; };
 		E1B126E90994F5DA8DC4CA7B /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7B480C22AFEA74C00CB5664 /* libn_body_rust_simulation.dylib in Frameworks */,
 				92C18699128F4CD5DCE361BE /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,13 +201,13 @@
 				6BE9873EC97CE6FC859CE3DE /* Pods-RunnerTests.release.xcconfig */,
 				E1B126E90994F5DA8DC4CA7B /* Pods-RunnerTests.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
 		D73912EC22F37F3D000D13A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D7B480C12AFEA74C00CB5664 /* libn_body_rust_simulation.dylib */,
 				B704BA86C003E19D5C00A19A /* Pods_Runner.framework */,
 				956385B0A75AE8E300E6004A /* Pods_RunnerTests.framework */,
 			);
@@ -238,9 +244,9 @@
 				33CC10E92044A3C60003C045 /* Sources */,
 				33CC10EA2044A3C60003C045 /* Frameworks */,
 				33CC10EB2044A3C60003C045 /* Resources */,
-				33CC110E2044A8840003C045 /* Bundle Framework */,
 				3399D490228B24CF009A79C7 /* ShellScript */,
 				5B8C8093322F4377DDC7C517 /* [CP] Embed Pods Frameworks */,
+				D7B480C02AFEA4A900CB5664 /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -259,7 +265,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 1300;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					331C80D4294CF70F00263BE5 = {
@@ -316,6 +322,7 @@
 			files = (
 				33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */,
 				33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */,
+				D7B480C32AFEA75400CB5664 /* libn_body_rust_simulation.dylib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
