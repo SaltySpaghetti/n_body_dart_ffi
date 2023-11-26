@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "compile Rust linux debug",
+            "command": "cd ${workspaceFolder}/example/lib; flutter build linux -t lib/main.dart --debug --verbose",
+            // "args": ["build", "linux"],
+            "type": "shell"
+        },
+        {
+            "label": "compile Rust windows debug",
+            "command": "cd ${workspaceFolder}/example/lib; flutter build windows -t lib/main.dart --debug --verbose",
+            // "args": ["build", "linux"],
+            "type": "shell"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "cmake.sourceDirectory": "/home/deimos/FLUTTER/tmp/n_body_dart_ffi/plugins/ffi_c_plugin/example/linux",
+    "java.compile.nullAnalysis.mode": "disabled",
+    "files.associations": {
+        "chrono": "cpp",
+        "random": "cpp",
+        "limits": "cpp",
+        "valarray": "cpp",
+        "algorithm": "cpp"
+    }
+}

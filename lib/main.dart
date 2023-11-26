@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:n_body_dart_ffi/controls.dart';
+import 'package:n_body_dart_ffi/models.dart';
 import 'package:n_body_dart_ffi/painters/n_body.dart';
 
 void main() {
@@ -34,15 +35,34 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
+  var method = Method.dartNative;
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
 
     return Scaffold(
-      body: Center(
-        child: NBodyDrawer(canvasSize: screenSize),
+      body: Stack(
+        children: [
+          Center(
+            child: NBodyDrawer(
+              key: UniqueKey(),
+              canvasSize: screenSize,
+              particlesAmount: 3000,
+              method: method,
+            ),
+          ),
+          Controls(
+            method: method,
+            onMethodChanged: (m) {
+              if (context.mounted) {
+                setState(() {
+                method = m;
+              });
+              }
+            },
+          )
+        ],
       ),
     );
   }

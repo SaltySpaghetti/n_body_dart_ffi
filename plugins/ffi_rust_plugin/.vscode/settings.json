@@ -1,0 +1,6 @@
+{
+    "cmake.sourceDirectory": "C:/workspace/n_body_dart_ffi/plugins/ffi_rust_plugin/example/linux",
+    "files.associations": {
+        "ffi_rust_plugin.h": "c"
+    }
+}
