@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:ffi_c_plugin/ffi_c_plugin.dart' as c_plugin;
-import 'package:ffi_rust_plugin/ffi_rust_plugin.dart' as rust_plugin;
 import 'package:ffi_c_plugin/ffi_c_plugin_bindings_generated.dart';
+import 'package:ffi_rust_plugin/ffi_rust_plugin.dart' as rust_plugin;
 import 'package:ffi_rust_plugin/ffi_rust_plugin_bindings_generated.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -98,10 +98,15 @@ abstract class SimulationManager<T> {
 }
 
 class NBodySimulationManagerDart extends SimulationManager<List<ParticleDart>> {
+  final List<double> accelX;
+  final List<double> accelY;
+  final Vector2 tmpDist = Vector2.zero();
+
   NBodySimulationManagerDart({
     required super.particlesAmount,
     required super.canvasSize,
-  });
+  })  : accelX = List.generate(particlesAmount, (index) => 0.0),
+        accelY = List.generate(particlesAmount, (index) => 0.0);
 
   double range(double min, double max) {
     return min + (Random().nextDouble() * (max - min));
@@ -139,13 +144,13 @@ class NBodySimulationManagerDart extends SimulationManager<List<ParticleDart>> {
 
   @override
   void updateParticles() {
-    Vector2 tmpDist = Vector2.zero();
     double dist = 0;
     double iForce = 0;
     double jForce = 0;
-
-    List<double> accelX = List.generate(particlesAmount, (index) => 0.0);
-    List<double> accelY = List.generate(particlesAmount, (index) => 0.0);
+    for (var i = 0; i < particlesAmount; i++) {
+      accelX[i] = 0;
+      accelY[i] = 0;
+    }
 
     for (int i = 0; i < particlesAmount; ++i) {
       particles[i].force = 0.0;
@@ -171,15 +176,11 @@ class NBodySimulationManagerDart extends SimulationManager<List<ParticleDart>> {
     }
 
     for (int i = 0; i < particlesAmount; ++i) {
-      particles[i].velocity += Vector2(
-        accelX[i] * Constants.deltaT,
-        accelY[i] * Constants.deltaT,
-      );
+      particles[i].velocity.x += accelX[i] * Constants.deltaT;
+      particles[i].velocity.y += accelX[i] * Constants.deltaT;
 
-      particles[i].pos += Vector2(
-        particles[i].velocity.x * Constants.deltaT,
-        particles[i].velocity.y * Constants.deltaT,
-      );
+      particles[i].pos.x += particles[i].velocity.x * Constants.deltaT;
+      particles[i].pos.y += particles[i].velocity.y * Constants.deltaT;
     }
   }
 }
@@ -279,13 +280,13 @@ class NBodySimulationManagerRust
   @override
   void init() {
     ffiRust = rust_plugin.initRust(
-          particlesAmount,
-          canvasSize.width,
-          canvasSize.height,
-          Constants.minMass,
-          Constants.maxMass,
-          ffiRust,
-        );
+      particlesAmount,
+      canvasSize.width,
+      canvasSize.height,
+      Constants.minMass,
+      Constants.maxMass,
+      ffiRust,
+    );
     updateParticles();
   }
 
@@ -295,9 +296,7 @@ class NBodySimulationManagerRust
   }
 }
 
-
-class NBodySimulationManagerC
-    extends SimulationManager<Pointer<Particle>> {
+class NBodySimulationManagerC extends SimulationManager<Pointer<Particle>> {
   NBodySimulationManagerC({
     required super.particlesAmount,
     required super.canvasSize,
@@ -306,17 +305,17 @@ class NBodySimulationManagerC
   @override
   void init() {
     c_plugin.initC(
-          particlesAmount,
-          canvasSize.width,
-          canvasSize.height,
-          Constants.minMass,
-          Constants.maxMass,
-        );
+      particlesAmount,
+      canvasSize.width,
+      canvasSize.height,
+      Constants.minMass,
+      Constants.maxMass,
+    );
     updateParticles();
   }
 
   @override
   void updateParticles() {
-    _particles =c_plugin.updateParticlesC();
+    _particles = c_plugin.updateParticlesC();
   }
 }
