@@ -17,8 +17,7 @@ enum Method {
   dart,
   dartNative,
   rust,
-  c,
-  python;
+  c;
 
   Icon methodIcon() {
     switch (this) {
@@ -30,8 +29,6 @@ enum Method {
         return Icon(MdiIcons.languageRust);
       case Method.c:
         return Icon(MdiIcons.languageC);
-      case Method.python:
-        return Icon(MdiIcons.languagePython);
     }
   }
 
@@ -45,8 +42,6 @@ enum Method {
         return "Rust";
       case Method.c:
         return "C/C++";
-      case Method.python:
-        return "Python";
     }
   }
 }
@@ -268,7 +263,7 @@ class NBodySimulationManagerDartNative
 }
 
 class NBodySimulationManagerRust
-    extends SimulationManager<Pointer<Pointer<ParticleRust>>> {
+    extends SimulationManager<Pointer<ParticleRust>> { 
   NBodySimulationManagerRust({
     required super.particlesAmount,
     required super.canvasSize,

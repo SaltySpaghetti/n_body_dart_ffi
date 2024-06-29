@@ -1,10 +1,9 @@
+import 'dart:async';
 import 'dart:ffi';
 
+import 'package:ffi_rust_plugin/ffi_rust_plugin.dart' as ffi_rust_plugin;
 import 'package:ffi_rust_plugin/ffi_rust_plugin_bindings_generated.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:ffi_rust_plugin/ffi_rust_plugin.dart' as ffi_rust_plugin;
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   late int sumResult;
   late Future<int> sumAsyncResult;
   Pointer<NBody> ffiRust = nullptr;
-  Pointer<Pointer<ParticleRust>> p = nullptr;
+  Pointer<ParticleRust> p = nullptr;
   late TextEditingController controller;
 
   @override
@@ -61,8 +60,7 @@ class _MyAppState extends State<MyApp> {
                     p = ffi_rust_plugin.updateParticlesRust(ffiRust);
                     controller.text = '';
                     for (var i = 0; i < 3; i++) {
-                      controller.text =
-                          '${controller.text}  ${p.value[i].pos_x}';
+                      controller.text = '${controller.text}  ${p[i].pos_x}';
                     }
                     setState(() {});
                   },

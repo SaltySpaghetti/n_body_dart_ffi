@@ -42,7 +42,7 @@ Pointer<NBody> initRust(
   );
 }
 
-Pointer<Pointer<ParticleRust>> updateParticlesRust(
+Pointer<ParticleRust> updateParticlesRust(
   Pointer<NBody> nBodyPtr,
 ) {
   return _bindings.update_particles(nBodyPtr);

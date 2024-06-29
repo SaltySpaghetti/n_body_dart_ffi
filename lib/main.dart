@@ -35,7 +35,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var method = Method.dartNative;
+  var method = Method.dart;
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
             onMethodChanged: (m) {
               if (context.mounted) {
                 setState(() {
-                method = m;
-              });
+                  method = m;
+                });
               }
             },
           )
