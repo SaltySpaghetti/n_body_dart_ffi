@@ -19,31 +19,26 @@ class Controls extends StatelessWidget {
     selectedLanguage.value[method.index] = true;
 
     return Positioned(
-      left: 16,
-      bottom: 16,
-      child: IntrinsicHeight(
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 24,
-          ),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 46, 46, 46),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      bottom: 16.0,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                method.methodName(),
-                style: const TextStyle(fontSize: 25),
-              ),
               const FPSCounter(),
               const SizedBox(height: 16.0),
               ValueListenableBuilder<List<bool>>(
-                  valueListenable: selectedLanguage,
-                  builder: (_, lang, __) {
-                    return ToggleButtons(
+                valueListenable: selectedLanguage,
+                builder: (_, lang, __) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 46, 46, 46),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ToggleButtons(
                       borderRadius: BorderRadius.circular(8),
                       isSelected: selectedLanguage.value,
                       children: List.generate(Method.values.length,
@@ -56,11 +51,13 @@ class Controls extends StatelessWidget {
                           selectedLanguage.value[i] = i == index ? true : false;
                         }
                       },
-                    );
-                  })
+                    ),
+                  );
+                },
+              ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }
@@ -94,27 +91,49 @@ class _FPSCounterState extends State<FPSCounter> {
   Widget build(BuildContext context) {
     return Container(
       clipBehavior: Clip.antiAlias,
-      margin: const EdgeInsets.only(left: 16.0),
-      height: 72,
-      width: 128,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: FPSContainer(fps: fps),
+    );
+  }
+}
+
+class FPSContainer extends StatelessWidget {
+  const FPSContainer({
+    super.key,
+    required this.fps,
+  });
+
+  final int fps;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      width: 250,
+      padding: const EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 24,
+      ),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 46, 46, 46),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Text(
             'FPS: ',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 48,
             ),
           ),
           Text(
             '$fps',
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 48,
               fontWeight: FontWeight.bold,
             ),
           ),

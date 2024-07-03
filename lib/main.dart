@@ -43,6 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       body: Stack(
+        alignment: Alignment.bottomCenter,
         children: [
           Center(
             child: NBodyDrawer(
@@ -50,6 +51,24 @@ class _MyHomePageState extends State<MyHomePage> {
               canvasSize: screenSize,
               particlesAmount: 3000,
               method: method,
+            ),
+          ),
+          Positioned(
+            left: 32,
+            bottom: 32,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 6,
+                horizontal: 24,
+              ),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 46, 46, 46),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                method.methodName(),
+                style: const TextStyle(fontSize: 48),
+              ),
             ),
           ),
           Controls(
