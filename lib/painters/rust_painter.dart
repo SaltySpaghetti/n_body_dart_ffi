@@ -4,7 +4,7 @@ import 'package:ffi_rust_plugin/ffi_rust_plugin_bindings_generated.dart';
 import 'package:flutter/material.dart';
 
 class NBodyPainterRust extends CustomPainter {
-  final ffi.Pointer<ffi.Pointer<ParticleRust>> particles;
+  final ffi.Pointer<ParticleRust> particles;
   final int particlesAmount;
 
   NBodyPainterRust({
@@ -18,8 +18,8 @@ class NBodyPainterRust extends CustomPainter {
 
     for (var i = 0; i < particlesAmount; i++) {
       canvas.drawCircle(
-        Offset(particles.value[i].pos_x, particles.value[i].pos_y),
-        particles.value[i].mass / 1500,
+        Offset(particles[i].pos_x, particles[i].pos_y),
+        particles[i].mass / 1500,
         paint,
       );
     }

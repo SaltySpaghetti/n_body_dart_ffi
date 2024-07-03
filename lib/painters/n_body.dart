@@ -64,8 +64,7 @@ class _NBodyDrawerState extends State<NBodyDrawer>
           canvasSize: widget.canvasSize,
         )..init();
         painter = NBodyPainterRust(
-          particles: simulationManager.particles
-              as ffi.Pointer<ffi.Pointer<ParticleRust>>,
+          particles: simulationManager.particles as ffi.Pointer<ParticleRust>,
           particlesAmount: widget.particlesAmount,
         );
       case Method.c:
@@ -77,9 +76,6 @@ class _NBodyDrawerState extends State<NBodyDrawer>
           particles: simulationManager.particles as ffi.Pointer<Particle>,
           particlesAmount: widget.particlesAmount,
         );
-
-      case Method.python:
-      // TODO: Handle this case.
     }
 
     ticker = Ticker(tick);

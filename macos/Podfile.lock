@@ -4,11 +4,15 @@ PODS:
   - ffi_rust_plugin (0.0.1):
     - FlutterMacOS
   - FlutterMacOS (1.0.0)
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
 
 DEPENDENCIES:
   - ffi_c_plugin (from `Flutter/ephemeral/.symlinks/plugins/ffi_c_plugin/macos`)
   - ffi_rust_plugin (from `Flutter/ephemeral/.symlinks/plugins/ffi_rust_plugin/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
+  - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
 
 EXTERNAL SOURCES:
   ffi_c_plugin:
@@ -17,12 +21,15 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/ffi_rust_plugin/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
+  path_provider_foundation:
+    :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
 
 SPEC CHECKSUMS:
   ffi_c_plugin: ce2b2d0c796c0f956297f55d62b99ad1b43807a2
   ffi_rust_plugin: f569dfd6e80dcd6c5835817fbd49005b22b269e0
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
 
 PODFILE CHECKSUM: 236401fc2c932af29a9fcf0e97baeeb2d750d367
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.15.2

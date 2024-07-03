@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:ffi_c_plugin/ffi_c_plugin.dart' as c_plugin;
-import 'package:ffi_rust_plugin/ffi_rust_plugin.dart' as rust_plugin;
 import 'package:ffi_c_plugin/ffi_c_plugin_bindings_generated.dart';
+import 'package:ffi_rust_plugin/ffi_rust_plugin.dart' as rust_plugin;
 import 'package:ffi_rust_plugin/ffi_rust_plugin_bindings_generated.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -15,23 +15,44 @@ import 'package:vector_math/vector_math_64.dart';
 
 enum Method {
   dart,
-  dartNative,
   rust,
   c,
-  python;
+  dartNative;
 
-  Icon methodIcon() {
+  Widget methodIcon() {
     switch (this) {
       case Method.dart:
-        return Icon(MdiIcons.sackPercent);
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 24.0,
+            vertical: 16.0,
+          ),
+          child: Image.asset('assets/dart.png', width: 48),
+        );
       case Method.dartNative:
-        return Icon(MdiIcons.sailBoat);
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Icon(
+            MdiIcons.help,
+            size: 48,
+          ),
+        );
       case Method.rust:
-        return Icon(MdiIcons.languageRust);
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 24.0,
+            vertical: 16.0,
+          ),
+          child: Image.asset('assets/rust.png', width: 48),
+        );
       case Method.c:
-        return Icon(MdiIcons.languageC);
-      case Method.python:
-        return Icon(MdiIcons.languagePython);
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 24.0,
+            vertical: 16.0,
+          ),
+          child: Image.asset('assets/cpp.png', width: 48),
+        );
     }
   }
 
@@ -40,13 +61,11 @@ enum Method {
       case Method.dart:
         return "Dart";
       case Method.dartNative:
-        return "Dart solo tipi primitivi + Float64List";
+        return "???";
       case Method.rust:
         return "Rust";
       case Method.c:
-        return "C/C++";
-      case Method.python:
-        return "Python";
+        return "C++";
     }
   }
 }
@@ -268,7 +287,7 @@ class NBodySimulationManagerDartNative
 }
 
 class NBodySimulationManagerRust
-    extends SimulationManager<Pointer<Pointer<ParticleRust>>> {
+    extends SimulationManager<Pointer<ParticleRust>> {
   NBodySimulationManagerRust({
     required super.particlesAmount,
     required super.canvasSize,
@@ -279,13 +298,13 @@ class NBodySimulationManagerRust
   @override
   void init() {
     ffiRust = rust_plugin.initRust(
-          particlesAmount,
-          canvasSize.width,
-          canvasSize.height,
-          Constants.minMass,
-          Constants.maxMass,
-          ffiRust,
-        );
+      particlesAmount,
+      canvasSize.width,
+      canvasSize.height,
+      Constants.minMass,
+      Constants.maxMass,
+      ffiRust,
+    );
     updateParticles();
   }
 
@@ -295,9 +314,7 @@ class NBodySimulationManagerRust
   }
 }
 
-
-class NBodySimulationManagerC
-    extends SimulationManager<Pointer<Particle>> {
+class NBodySimulationManagerC extends SimulationManager<Pointer<Particle>> {
   NBodySimulationManagerC({
     required super.particlesAmount,
     required super.canvasSize,
@@ -306,17 +323,17 @@ class NBodySimulationManagerC
   @override
   void init() {
     c_plugin.initC(
-          particlesAmount,
-          canvasSize.width,
-          canvasSize.height,
-          Constants.minMass,
-          Constants.maxMass,
-        );
+      particlesAmount,
+      canvasSize.width,
+      canvasSize.height,
+      Constants.minMass,
+      Constants.maxMass,
+    );
     updateParticles();
   }
 
   @override
   void updateParticles() {
-    _particles =c_plugin.updateParticlesC();
+    _particles = c_plugin.updateParticlesC();
   }
 }

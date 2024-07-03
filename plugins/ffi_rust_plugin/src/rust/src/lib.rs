@@ -160,6 +160,6 @@ pub extern "C" fn init(
 }
 
 #[no_mangle]
-pub extern "C" fn update_particles(n_body_ptr: &mut NBody) -> *const Vec<Particle> {
-    &n_body_ptr.update_particles().particles
+pub extern "C" fn update_particles(n_body_ptr: &mut NBody) -> *const Particle {
+    &n_body_ptr.update_particles().particles[0]
 }
