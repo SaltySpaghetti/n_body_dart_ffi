@@ -21,9 +21,6 @@ final DynamicLibrary _dylib = () {
   throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
 }();
 
-/// The bindings to the native functions in [_dylib].
-final FfiRustPluginBindings _bindings = FfiRustPluginBindings(_dylib);
-
 Pointer<NBody> initRust(
   int particlesAmount,
   double canvasWidth,
@@ -32,7 +29,7 @@ Pointer<NBody> initRust(
   double maxMass,
   Pointer<NBody> previousPtr,
 ) {
-  return _bindings.init(
+  return init(
     particlesAmount,
     canvasWidth,
     canvasHeight,
@@ -45,5 +42,5 @@ Pointer<NBody> initRust(
 Pointer<ParticleRust> updateParticlesRust(
   Pointer<NBody> nBodyPtr,
 ) {
-  return _bindings.update_particles(nBodyPtr);
+  return update_particles(nBodyPtr);
 }
