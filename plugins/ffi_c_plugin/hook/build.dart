@@ -18,6 +18,9 @@ void main(List<String> args) async {
         'src/simulation.cpp',
       ],
       dartBuildFiles: ['hook/build.dart'],
+      flags: [
+        '-Os'
+      ]
     );
     await cbuilder.run(
       config: config,
