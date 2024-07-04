@@ -20,25 +20,13 @@ final DynamicLibrary _dylib = () {
   throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
 }();
 
-/// The bindings to the native functions in [_dylib].
-final FfiCPluginBindings _bindings = FfiCPluginBindings(_dylib);
-
 void initC(
   int particlesAmount,
   double canvasWidth,
   double canvasHeight,
   double minMass,
   double maxMass,
-) {
-  _bindings.init_c(
-    particlesAmount,
-    canvasWidth,
-    canvasHeight,
-    minMass,
-    maxMass,
-  );
-}
+) =>
+    init_c(particlesAmount, canvasWidth, canvasHeight, minMass, maxMass);
 
-ffi.Pointer<Particle> updateParticlesC() {
-  return _bindings.update_particles_c();
-}
+ffi.Pointer<Particle> updateParticlesC() => update_particles_c();

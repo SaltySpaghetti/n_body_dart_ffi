@@ -17,3 +17,6 @@ preamble: |
 comments:
   style: any
   length: full
+# ffi-native:
+compiler-opts:
+  - '-I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/'
