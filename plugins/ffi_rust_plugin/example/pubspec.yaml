@@ -39,6 +39,12 @@ dependencies:
     # the parent directory to use the current plugin's version.
     path: ../
 
+dependency_overrides:
+  native_assets_cli:
+    git:
+      url: https://github.com/dart-lang/native.git
+      path: pkgs/native_assets_cli/
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

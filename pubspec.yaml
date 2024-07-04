@@ -22,6 +22,14 @@ dependencies:
   material_design_icons_flutter: ^7.0.7296
   google_fonts: ^6.2.1
 
+dependency_overrides:
+  # required for ffi_rust_plugin
+  native_assets_cli:
+    git:
+      url: https://github.com/dart-lang/native.git
+      path: pkgs/native_assets_cli/
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
