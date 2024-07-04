@@ -4,16 +4,28 @@
 
 import 'dart:io';
 
-import 'package:logging/logging.dart';
 import 'package:native_assets_cli/native_assets_cli.dart';
 
 void main(List<String> args) async {
   await build(args, (config, output) async {
-    await Process.run(
+    final target = config.targetArchitecture == Architecture.arm64
+        ? 'aarch64-apple-darwin'
+        : 'x86_64-apple-darwin';
+    final result = await Process.run(
       'cargo',
-      ['build', '--release'],
+      [
+        'build',
+        '--release',
+        '--target=$target',
+        '--target-dir=${config.outputDirectory.toFilePath()}'
+      ],
       workingDirectory: config.packageRoot.resolve('src/rust/').toFilePath(),
     );
+
+    if (result.exitCode != 0) {
+      print('${result.stderr} ${result.stdout}');
+      throw 'cargo build failed';
+    }
     // TODO: use config.outputDirectory and tell to cargo.
     output.addAsset(
       NativeCodeAsset(
@@ -22,10 +34,13 @@ void main(List<String> args) async {
         linkMode: DynamicLoadingBundled(),
         os: config.targetOS,
         architecture: config.targetArchitecture,
-        file: config.packageRoot
-            .resolve('src/rust/target/release/libn_body_rust_simulation.dylib'),
+        file: config.outputDirectory
+            .resolve('$target/release/libn_body_rust_simulation.dylib'),
       ),
     );
+    output.addDependencies([
+      config.packageRoot.resolve('hook/build.dart'),
+    ]);
     // TODO output.addDependencies
   });
 }
